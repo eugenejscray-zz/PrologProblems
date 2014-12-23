@@ -554,7 +554,7 @@ Class prologTests extends prologTester{
 		$description = "Drop every N'th element from a list.";
 		$solutionDescription = "";
 		$solutionCode = "";
-		$testInput = array("a","a","b","b","c","c");
+		$expectedSolution = array("a","a","b","b","c","c");
 		$startTime = microtime(true);
 
 		$output = array();
@@ -588,7 +588,7 @@ Class prologTests extends prologTester{
 		$description = "Split a list into two parts; the length of the first part is given.";
 		$solutionDescription = "";
 		$solutionCode = "";
-		$testInput = array(array("a","b","c"), array("d","e","f"));
+		$expectedSolution = array(array("a","b","c"), array("d","e","f"));
 		$startTime = microtime(true);
 
 		$output = array();
@@ -619,7 +619,7 @@ Class prologTests extends prologTester{
 		$description = "Extract a slice from a list.";
 		$solutionDescription = "";
 		$solutionCode = "";
-		$testInput = array("c","d","e","f","g");
+		$expectedSolution = array("c","d","e","f","g");
 		$startTime = microtime(true);
 
 		$output = array();
@@ -641,21 +641,188 @@ Class prologTests extends prologTester{
 		return $returned;
 	}
 
-	public function problemNineteen($ar_in, $indexOne, $indexTwo){
+	public function problemNineteen($ar_in, $length){
 		// really we should be grabbing the title from the function name.
-		$title = "Problem Eighteen";
-		$description = "Extract a slice from a list.";
+		$title = "Problem Nineteen";
+		$description = "Rotate a list N places to the left.";
 		$solutionDescription = "";
 		$solutionCode = "";
-		$testInput = array("c","d","e","f","g");
+		$expectedSolution = array("b","c","d","a");
 		$startTime = microtime(true);
 
 		$output = array();
 
 		// this does not take into consideration non consecutive elements.
+		if($length > 0){
+			$rotational = array_slice($ar_in, 0, $length)
+			$base = array_slice($ar_in,$length - 1);
+			$output = array_merge($base,$rotational);
+		}
+		else{
+			$rotational = array_slice($ar_in, $length);
+			$base = array_slice($ar_in, 0, $length);
+			$output = array_merge($rotational, $base);
+		}
+
 		// take the first slice and append it to the end.
+
 		$output = array_slice($ar_in, $indexOne, $indexTwo - $indexOne);
 		// microtime is not functioning right.
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}
+
+	public function problemNineteen($ar_in, $length){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Nineteen";
+		$description = "Rotate a list N places to the left.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$expectedSolution = array("b","c","d","a");
+		$startTime = microtime(true);
+
+		$output = array();
+
+		// this does not take into consideration non consecutive elements.
+		if($length > 0){
+			$rotational = array_slice($ar_in, 0, $length)
+			$base = array_slice($ar_in,$length - 1);
+			$output = array_merge($base,$rotational);
+		}
+		else{
+			$rotational = array_slice($ar_in, $length);
+			$base = array_slice($ar_in, 0, $length);
+			$output = array_merge($rotational, $base);
+		}
+
+		// microtime is not functioning right.
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}	
+	public function problemTwenty($ar_in, $k){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty";
+		$description = "Remove the K'th element from a list.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$expectedSolution = array("a","c","d");
+		$startTime = microtime(true);
+
+		unset($ar_in[$k -1]);
+		$output = array_values($ar_in);
+
+		// microtime is not functioning right.
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}
+	public function problemTwentyOne($ar_in, $element, $position){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty One";
+		$description = "Insert an element at a given position into a list.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$expectedSolution = array("a","b","h","c","d");
+		$startTime = microtime(true);
+
+		$output = array_slice($ar_in, 0, $position);
+		array_push($output, $element);
+		array_merge($output, array_slice($ar_in, $position - 1));
+
+		// microtime is not functioning right.
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}
+	public function problemTwentyTwo($start, $end){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty Two";
+		$description = "Create a list containing all integers within a given range.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$expectedSolution = array(4,5,6,7,8,9);
+		$startTime = microtime(true);
+
+		$output = array();
+		for($i = $start; $i <= $end; $i++)
+			array_push($output, $i);
+
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}
+	public function problemTwentyThree($ar_in, $numberOfRandomSelections){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty Three";
+		$description = "Lotto: Draw N different random numbers from the set 1..M.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$startTime = microtime(true);
+
+		$output = array();
+		$selectedHash = array();
+		// recursive function to ensure we are not pulling an element twice.
+		function getRandomElement(){
+			$random = rand(0, count(0, count($ar_in) - 1  );
+			if(array_key_exists($random))
+				return getRandomElement();
+			else
+				return $random;
+		}
+		for($i = 0; $i < $numberOfRandomSelections; $i++)
+			array_push($output, getRandomElement());
+
+		// hard to get an exact value of what will be outputted so we set the value to itself.
+		// Keep in mind this is not a valid test case!
+		$expectedSolution = $output;
+
 		$endTime = microtime(true);
 		// We may want to consider something different.
 		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
@@ -724,8 +891,17 @@ array_push($solutions, $testSolutions->problemSeventeen($testInput, 3));
 $testInput = array("a","b","c","d","e","f","g","h");
 array_push($solutions, $testSolutions->problemEighteen($testInput, 3, 7));
 
-$testInput = array("a","b","c","d","e","f","g","h");
-array_push($solutions, $testSolutions->problemNineteen($testInput, 3, 7));
+$testInput = array("a","b","c","d");
+array_push($solutions, $testSolutions->problemNineteen($testInput, 1));
+array_push($solutions, $testSolutions->problemTwenty($testInput, 2));
+array_push($solutions, $testSolutions->problemTwentyOne($testInput, "h", 3));
+
+array_push($solutions, $testSolutions->problemTwentyTwo(4, 9));
+$testInput = array("a","b","c","d");
+
+
+
+
 
 
 
