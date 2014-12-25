@@ -654,7 +654,7 @@ Class prologTests extends prologTester{
 
 		// this does not take into consideration non consecutive elements.
 		if($length > 0){
-			$rotational = array_slice($ar_in, 0, $length)
+			$rotational = array_slice($ar_in, 0, $length);
 			$base = array_slice($ar_in,$length - 1);
 			$output = array_merge($base,$rotational);
 		}
@@ -681,44 +681,6 @@ Class prologTests extends prologTester{
 			"success" => $successState["success"]);
 		return $returned;
 	}
-
-	public function problemNineteen($ar_in, $length){
-		// really we should be grabbing the title from the function name.
-		$title = "Problem Nineteen";
-		$description = "Rotate a list N places to the left.";
-		$solutionDescription = "";
-		$solutionCode = "";
-		$expectedSolution = array("b","c","d","a");
-		$startTime = microtime(true);
-
-		$output = array();
-
-		// this does not take into consideration non consecutive elements.
-		if($length > 0){
-			$rotational = array_slice($ar_in, 0, $length)
-			$base = array_slice($ar_in,$length - 1);
-			$output = array_merge($base,$rotational);
-		}
-		else{
-			$rotational = array_slice($ar_in, $length);
-			$base = array_slice($ar_in, 0, $length);
-			$output = array_merge($rotational, $base);
-		}
-
-		// microtime is not functioning right.
-		$endTime = microtime(true);
-		// We may want to consider something different.
-		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
-
-		$returned = array("title" => $title,
-			"description" => $description, 
-			"solution" => $solutionCode,
-			"time" => $endTime - $startTime,
-			"output" => $output,
-			"message" => $successState["message"], 
-			"success" => $successState["success"]);
-		return $returned;
-	}	
 	public function problemTwenty($ar_in, $k){
 		// really we should be grabbing the title from the function name.
 		$title = "Problem Twenty";
@@ -801,7 +763,7 @@ Class prologTests extends prologTester{
 	public function problemTwentyThree($ar_in, $numberOfRandomSelections){
 		// really we should be grabbing the title from the function name.
 		$title = "Problem Twenty Three";
-		$description = "Lotto: Draw N different random numbers from the set 1..M.";
+		$description = "Extract a given number of randomly selected elements from a list.";
 		$solutionDescription = "";
 		$solutionCode = "";
 		$startTime = microtime(true);
@@ -809,8 +771,9 @@ Class prologTests extends prologTester{
 		$output = array();
 		$selectedHash = array();
 		// recursive function to ensure we are not pulling an element twice.
+		// we can refactor this to unset the element from the list and then grab another random one there.
 		function getRandomElement(){
-			$random = rand(0, count(0, count($ar_in) - 1  );
+			$random = rand(0, count($ar_in) - 1  );
 			if(array_key_exists($random))
 				return getRandomElement();
 			else
@@ -837,6 +800,125 @@ Class prologTests extends prologTester{
 		return $returned;
 	}
 
+	public function problemTwentyFour($length, $upperLimit){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty Four";
+		$description = "Lotto: Draw N different random numbers from the set 1..M.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$startTime = microtime(true);
+
+		$output = array();
+		// recursive function to ensure we are not pulling an element twice.
+		for($i = 0; $i < $length; $i++){
+			$random = rand(1,$upperLimit);
+			array_push($output, $random);
+		}
+
+		// Keep in mind this is not a valid test case!
+		$expectedSolution = $output;
+
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}
+
+	public function problemTwentyFive($ar_in){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty Five";
+		$description = "Generate a random permutation of the elements of a list.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$startTime = microtime(true);
+
+		$output = array();
+		// recursive function to ensure we are not pulling an element twice.
+		function grabRandomElement($ar_in){
+			$randomIndex = rand(0, count($ar_in) - 1 );
+			$randomElement = $ar_in[$randomIndex];
+			unset($ar_in[$randomIndex]);
+			// reset the values
+			$ar_in = array_values($ar_in);
+		}
+		for($i = 0; $i < $length; $i++){
+			array_push($output, grabRandomElement($ar_in));
+		}
+
+		// Keep in mind this is not a valid test case!
+		// consider building an funciton isPermutation
+		$expectedSolution = $output;
+
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}	
+	// This is done using backtracking.
+	public function problemTwentySix($ar_in, $numberOfElements){
+		// really we should be grabbing the title from the function name.
+		$title = "Problem Twenty Six";
+		$description = "Generate the combinations of K distinct objects chosen from the N elements of a list.";
+		$solutionDescription = "";
+		$solutionCode = "";
+		$startTime = microtime(true);
+
+		$output = array();
+		// recursive function to ensure we are not pulling an element twice.
+		// We have to loop through the function X times. Why? Because we have to go through number one.
+		// element 1, This one is tough and a great exercise. I will take a break.
+		$combinations = array();
+		// TODO backtrack through the combinations.
+		function grabElement($array, $index){
+			unset($array[$index]);
+			$array = array_values($array);
+			return $array;
+		}
+		// we need to loop through by choosing the first element and then switching up the last element for the new one.
+		if($numberOfElements > count($ar_in)){
+			$output = 0;
+		}
+		else{
+			$output = 1;
+			for($i = 0; $i < $numberOfElements; $i++){
+				$output *= count($ar_in) - $i;
+			}
+			for($i = 0; $i < $numberOfElements; $i++){
+				$element = $ar_in[$i]
+			}
+		}
+
+		// the count should equal the result of the calculation of output.
+		$endTime = microtime(true);
+		// We may want to consider something different.
+		$successState = $this->assertEquals($expectedSolution, $output, "The array has not been reversed", "The array has been reversed!");
+
+		$returned = array("title" => $title,
+			"description" => $description, 
+			"solution" => $solutionCode,
+			"time" => $endTime - $startTime,
+			"output" => $output,
+			"message" => $successState["message"], 
+			"success" => $successState["success"]);
+		return $returned;
+	}	
+
 }
 
 Class prologAnswers{
@@ -850,6 +932,8 @@ $solutions = array();
 // loop through all of the functions.
 $testSolutions = new prologTests();
 $testInput = array("a","b","c","d");
+
+// there is definitely a pattern here
 array_push($solutions, $testSolutions->problemOne($testInput)); 
 array_push($solutions, $testSolutions->problemTwo($testInput)); 
 $k = 2;
@@ -898,6 +982,16 @@ array_push($solutions, $testSolutions->problemTwentyOne($testInput, "h", 3));
 
 array_push($solutions, $testSolutions->problemTwentyTwo(4, 9));
 $testInput = array("a","b","c","d");
+array_push($solutions, $testSolutions->problemTwentyThree($ar_in, 4));
+array_push($solutions, $testSolutions->problemTwentyFour(4, 10));
+array_push($solutions, $testSolutions->problemTwentyFive($testInput));
+array_push($solutions, $testSolutions->problemTwentyFive($testInput));
+
+
+
+
+
+
 
 
 
